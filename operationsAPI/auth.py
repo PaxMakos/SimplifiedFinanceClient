@@ -11,6 +11,7 @@ def login(username, password):
         if response.status_code == 200 and response.json()["status"] == "success":
             session = requests.Session()
             session.cookies.set("sessionid", response.json()["sessionKey"])
+
             return True, session
         return False, response.json()["message"]
     except ConnectionError:
