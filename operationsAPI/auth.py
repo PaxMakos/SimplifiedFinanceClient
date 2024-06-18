@@ -1,102 +1,117 @@
 import requests
+from requests.exceptions import ConnectionError
 import os
 from settings import API_URL
 
 
 def login(username, password):
-    data = {"username": username, "password": password}
-
-    response = requests.post(API_URL + "login/", data=data)
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        session = requests.Session()
-        session.cookies.set("sessionid", response.json()["sessionKey"])
-
-        return True, session
-
-    return False, response.json()["message"]
+    try:
+        data = {"username": username, "password": password}
+        response = requests.post(API_URL + "login/", data=data)
+        if response.status_code == 200 and response.json()["status"] == "success":
+            session = requests.Session()
+            session.cookies.set("sessionid", response.json()["sessionKey"])
+            return True, session
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def logout(session):
-    response = session.post(API_URL + "logout/")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, None
-
-    return False, response.json()["message"]
+    try:
+        response = session.post(API_URL + "logout/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, None
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def register(username, password):
-    data = {"username": username, "password": password}
-
-    response = requests.post(API_URL + "register/", data=data)
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, None
-
-    return False, response.json()["message"]
+    try:
+        data = {"username": username, "password": password}
+        response = requests.post(API_URL + "register/", data=data)
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, None
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def sessionInfo(session):
-    response = session.get(API_URL + "sessionInfo/")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, response.json()["sessionKey"]
-
-    return False, response.json()["message"]
+    try:
+        response = session.get(API_URL + "sessionInfo/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, response.json()["sessionKey"]
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def getUsers(session):
-    response = session.get(API_URL + "users/")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, response.json()["users"]
-
-    return False, response.json()["message"]
+    try:
+        response = session.get(API_URL + "users/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, response.json()["users"]
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def isSuperuser(session):
-    response = session.get(API_URL + "isSuperuser/")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, response.json()["isSuperuser"]
-
-    return False, response.json()["message"]
+    try:
+        response = session.get(API_URL + "isSuperuser/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, response.json()["isSuperuser"]
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def getMyPermissions(session):
-    response = session.get(API_URL + "permissions/")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, response.json()["permissions"]
-
-    return False, response.json()["message"]
+    try:
+        response = session.get(API_URL + "permissions/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, response.json()["permissions"]
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def getAllPermissions(session):
-    response = session.get(API_URL + "allPermissions")
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, response.json()["permissions"]
-
-    return False, response.json()["message"]
+    try:
+        response = session.get(API_URL + "allPermissions")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, response.json()["permissions"]
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def givePermission(session, user, project):
-    data = {"user": user, "projectName": project}
-
-    response = session.post(API_URL + 'givePermission/', data=data)
-
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, None
-
-    return False, response.json()["message"]
+    try:
+        data = {"user": user, "projectName": project}
+        response = session.post(API_URL + 'givePermission/', data=data)
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, None
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
 
 def removePermission(session, user, project):
-    response = session.get(API_URL + "removePermission/" + user + "/" + project + "/")
+    try:
+        response = session.get(API_URL + "removePermission/" + user + "/" + project + "/")
+        if response.status_code == 200 and response.json()["status"] == "success":
+            return True, None
+        return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection Error"
 
-    if response.status_code == 200 and response.json()["status"] == "success":
-        return True, None
 
-    return False, response.json()["message"]
+def checkConnection():
+    try:
+        response = requests.get(API_URL)
+        return True
+    except ConnectionError:
+        return False
