@@ -50,7 +50,21 @@ def exportTransactions(session, fromDate=None, toDate=None):
     # API request to export transactions from server
     try:
         data = {"fromDate": fromDate, "toDate": toDate}
-        response = session.get(API_URL + "exportTransactions/", params=data)
+        response = session.get(API_URL + "exportTransactions/", data=data)
+
+        if response.status_code == 200:
+            return True, response.content
+        else:
+            return False, response.json()["message"]
+    except ConnectionError:
+        return False, "Connection error"
+
+
+def raportGraph(startDate, endDate, project):
+    # API request to get graph data
+    try:
+        data = {"startDate": startDate, "endDate": endDate, "project": project}
+        response = requests.get(API_URL + "raportGraph/", data=data)
 
         if response.status_code == 200:
             return True, response.content
