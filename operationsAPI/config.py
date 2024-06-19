@@ -1,7 +1,7 @@
 import requests
 from requests.exceptions import ConnectionError
 from settings import API_URL
-from auth import login
+from .auth import login
 
 
 def isConfigured():
