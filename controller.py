@@ -22,7 +22,7 @@ class Controller:
 
         self.app.mainloop()
 
-    def changeView(self, view, model=None):
+    def changeView(self, view, model=None, data=None):
 
         if self.currentView is not None:
             self.currentView.destroy()
@@ -122,7 +122,27 @@ class Controller:
             self.showPopup(response)
 
     def show(self, what):
-        pass
+        if what == "vendors":
+            success, response = operationsAPI.vendors.getVendors(self.session)
+        elif what == "projects":
+            success, response = operationsAPI.projects.getProjects(self.session)
+        elif what == "returns":
+            success, response = operationsAPI.returns.getReturns(self.session)
+        elif what == "accounts":
+            success, response = operationsAPI.accounts.getAccounts(self.session)
+        elif what == "transactions":
+            success, response = operationsAPI.transactions.getTransactions(self.session)
+        elif what == "invoices":
+            success, response = operationsAPI.invoices.getInvoices(self.session)
+        elif what == "users":
+            success, response = operationsAPI.auth.getUsers(self.session)
+
+        if not success:
+            self.showPopup(response)
+            return
+        else:
+            self.changeView(ViewsList.SHOW, what, response)
+
 
     def importData(self):
         pass

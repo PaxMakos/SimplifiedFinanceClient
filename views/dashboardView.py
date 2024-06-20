@@ -57,7 +57,7 @@ class Dashboard(CTkFrame):
             self.title.grid(row=0, column=0, columnspan=2, pady=20)
             self.transactionButton.grid(row=1, column=0, pady=10, padx=10)
             self.exportButton.grid(row=1, column=1, pady=10, padx=10)
-            self.logoutButton.grid(row=3, column=1, pady=10, padx=10)
+            self.logoutButton.grid(row=3, column=0, pady=10, padx=10, columnspan=2)
 
 
 if __name__ == "__main__":

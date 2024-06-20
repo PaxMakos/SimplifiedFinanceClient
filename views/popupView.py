@@ -5,7 +5,9 @@ class PopupView(customtkinter.CTkToplevel):
     def __init__(self, master, message):
         super().__init__(master)
         self.message = message
-        self.geometry("300x100")
+        x = master.winfo_x() + master.winfo_width() // 2 - 150
+        y = master.winfo_y() + master.winfo_height() // 2 - 50
+        self.geometry(f"300x100+{x}+{y}")
 
         self.createWidgets()
         self.focus()
