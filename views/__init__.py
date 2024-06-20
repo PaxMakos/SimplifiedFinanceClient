@@ -6,4 +6,5 @@ from views.registerView import Register
 from views.startView import StartView
 from views.popupView import PopupView
 from views.addReturnView import AddReturnView
+from views.recordListView import RecordView
 

@@ -31,7 +31,7 @@ class Dashboard(CTkFrame):
                                        height=HEIGHT, width=WIDTH)
         self.permissionButton = CTkButton(self, text=lang["permissionsButton"], command=self.showFunc("permissions"),
                                           height=HEIGHT, width=WIDTH)
-        self.usersButton = CTkButton(self, text=lang["usersButton"], command=self.showFunc("users"),
+        self.vendorsButton = CTkButton(self, text=lang["vendorsButton"], command=self.showFunc("vendors"),
                                      height=HEIGHT, width=WIDTH)
         self.returnsButton = CTkButton(self, text=lang["returnsButton"], command=self.showFunc("returns"),
                                        height=HEIGHT, width=WIDTH)
@@ -48,7 +48,7 @@ class Dashboard(CTkFrame):
             self.accountButton.grid(row=1, column=2, pady=10, padx=10)
             self.projectButton.grid(row=2, column=0, pady=10, padx=10)
             self.permissionButton.grid(row=2, column=1, pady=10, padx=10)
-            self.usersButton.grid(row=2, column=2, pady=10, padx=10)
+            self.vendorsButton.grid(row=2, column=2, pady=10, padx=10)
             self.returnsButton.grid(row=3, column=0, pady=10, padx=10)
             self.importButton.grid(row=3, column=1, pady=10, padx=10)
             self.exportButton.grid(row=3, column=2, pady=10, padx=10)
@@ -59,10 +59,12 @@ class Dashboard(CTkFrame):
             self.exportButton.grid(row=1, column=1, pady=10, padx=10)
             self.logoutButton.grid(row=3, column=0, pady=10, padx=10, columnspan=2)
 
+        self.pack()
+
 
 if __name__ == "__main__":
     root = CTk()
     customtkinter.set_appearance_mode("dark")
 
-    view = Dashboard(root, True, lambda: print("Logout"), lambda: print("Show"), lambda: print("Import"), lambda: print("Export"))
+    view = Dashboard(root, True, lambda arg: print("Logout", arg), lambda arg: print("Show", arg), lambda arg: print("Import", arg), lambda arg: print("Export", arg))
     root.mainloop()

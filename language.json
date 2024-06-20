@@ -83,5 +83,6 @@
   "userView": "Lista użytkowników",
   "isSuperuser": "Administrator",
   "createUser": "Dodaj użytkownika",
-  "givePermission": "Dodaj uprawnienie"
+  "givePermission": "Dodaj uprawnienie",
+  "vendorsButton": "Pokaż partnerów"
 }

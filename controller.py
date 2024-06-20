@@ -63,6 +63,56 @@ class Controller:
                 self.currentView = views.addReturnView.AddReturnView(self.app,
                                                                      self.addReturn,
                                                                      lambda: self.changeView(prev))
+            case ViewsList.RECORD_LIST:
+                if model == "vendors":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "vendors",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsVendor,
+                                                                           self.addVendor)
+                elif model == "projects":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "projects",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsProject,
+                                                                           self.addProject)
+                elif model == "returns":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "returns",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsReturn)
+                elif model == "accounts":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "accounts",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsAccount,
+                                                                           self.addAccount)
+                elif model == "transactions":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "transactions",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsTransaction,
+                                                                           self.addTransaction)
+                elif model == "invoices":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "invoices",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsInvoice,
+                                                                           self.addInvoice)
+                elif model == "users":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                           "users",
+                                                                           data,
+                                                                           lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                           self.detailsUser)
+
+
 
         self.currentView.grid(row=0, column=0)
         self.app.currentUi.append(self.currentView)
@@ -141,7 +191,7 @@ class Controller:
             self.showPopup(response)
             return
         else:
-            self.changeView(ViewsList.SHOW, what, response)
+            self.changeView(ViewsList.RECORD_LIST, what, response)
 
 
     def importData(self):
@@ -178,3 +228,5 @@ class Controller:
                 self.changeView(ViewsList.DASHBOARD)
         else:
             self.showPopup(response)
+
+

@@ -55,6 +55,8 @@ class RecordView(CTkFrame):
             self.createPermissionWidgets()
         elif self.recordType == "users":
             self.createUserWidgets()
+        elif self.recordType == "returns":
+            self.createReturnWidgets()
         else:
             self.goBack()
 
@@ -415,6 +417,56 @@ class RecordView(CTkFrame):
             self.editButton.grid(row=0, column=2)
 
         self.pack(fill=BOTH, expand=1)
+
+
+    def createReturnWidgets(self):
+        self.title.configure(text=self.lang["returnView"])
+        if self.createRecord is not None:
+            self.newButton.configure(text=self.lang["createReturn"])
+
+        self.columnsTitle.grid_columnconfigure(0, weight=1, minsize=self.width / 4)
+        self.columnsTitle.grid_columnconfigure(1, weight=1, minsize=self.width / 4)
+        self.columnsTitle.grid_columnconfigure(2, weight=1, minsize=self.width / 4)
+        self.columnsTitle.grid_columnconfigure(3, weight=1, minsize=self.width / 4)
+
+        self.projectTitle = CTkLabel(self.columnsTitle, text=self.lang["project"])
+        self.projectTitle.grid(row=0, column=0)
+
+        self.titleTitle = CTkLabel(self.columnsTitle, text=self.lang["title"])
+        self.titleTitle.grid(row=0, column=1)
+
+        self.amountTitle = CTkLabel(self.columnsTitle, text=self.lang["amount"])
+        self.amountTitle.grid(row=0, column=2)
+
+        self.actionsTitle = CTkLabel(self.columnsTitle, text=self.lang["actions"])
+        self.actionsTitle.grid(row=0, column=3)
+
+        self.innerFrame = CTkScrollableFrame(self)
+        self.innerFrame.grid(row=3, column=0, columnspan=2, pady=10, padx=10, sticky="nsew")
+        self.innerFrame.grid_columnconfigure(0, weight=1)
+
+        for i, record in self.recordData.iterrows():
+            self.recordFrame = CTkFrame(self.innerFrame)
+            self.recordFrame.grid(row=i, column=0, pady=10, padx=10, sticky="nsew")
+            self.recordFrame.grid_columnconfigure(0, weight=1, minsize=self.width / 4)
+            self.recordFrame.grid_columnconfigure(1, weight=1, minsize=self.width / 4)
+            self.recordFrame.grid_columnconfigure(2, weight=1, minsize=self.width / 4)
+            self.recordFrame.grid_columnconfigure(3, weight=1, minsize=self.width / 4)
+
+            self.projectLabel = CTkLabel(self.recordFrame, text=record.get("project"))
+            self.projectLabel.grid(row=0, column=0)
+
+            self.titleLabel = CTkLabel(self.recordFrame, text=record.get("title"))
+            self.titleLabel.grid(row=0, column=1)
+
+            self.amountLabel = CTkLabel(self.recordFrame, text=record.get("amount"))
+            self.amountLabel.grid(row=0, column=2)
+
+            self.editButton = CTkButton(self.recordFrame, text=self.lang["details"], command=lambda: self.action(record))
+            self.editButton.grid(row=0, column=3)
+
+        self.pack(fill=BOTH, expand=1)
+
 
 
 if __name__ == "__main__":
