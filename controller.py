@@ -1,9 +1,12 @@
 import customtkinter as ctk
+import pandas as pd
+
 import settings
 from viewsList import ViewsList
 import views
 import operationsAPI
 import json
+from datetime import datetime, timedelta
 
 
 class Controller:
@@ -70,14 +73,14 @@ class Controller:
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
                                                                            self.detailsVendor,
-                                                                           self.addVendor)
+                                                                           lambda: self.changeView(ViewsList.ADD_VENDOR))
                 elif model == "projects":
                     self.currentView = views.recordListView.RecordView(self.app,
                                                                            "projects",
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
                                                                            self.detailsProject,
-                                                                           self.addProject)
+                                                                       lambda: self.changeView(ViewsList.ADD_PROJECT))
                 elif model == "returns":
                     self.currentView = views.recordListView.RecordView(self.app,
                                                                            "returns",
@@ -90,28 +93,57 @@ class Controller:
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
                                                                            self.detailsAccount,
-                                                                           self.addAccount)
+                                                                       lambda: self.changeView(ViewsList.ADD_ACCOUNT))
                 elif model == "transactions":
                     self.currentView = views.recordListView.RecordView(self.app,
                                                                            "transactions",
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
                                                                            self.detailsTransaction,
-                                                                           self.addTransaction)
+                                                                       lambda: self.changeView(ViewsList.ADD_TRANSACTION))
                 elif model == "invoices":
                     self.currentView = views.recordListView.RecordView(self.app,
                                                                            "invoices",
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
                                                                            self.detailsInvoice,
-                                                                           self.addInvoice)
+                                                                           lambda: self.changeView(ViewsList.ADD_INVOICE))
                 elif model == "users":
                     self.currentView = views.recordListView.RecordView(self.app,
                                                                            "users",
                                                                            data,
                                                                            lambda: self.changeView(ViewsList.DASHBOARD),
-                                                                           self.detailsUser)
-
+                                                                           lambda: self.changeView(ViewsList.ADD_PERMISSION))
+                elif model == "permissions":
+                    self.currentView = views.recordListView.RecordView(self.app,
+                                                                       "permissions",
+                                                                       data,
+                                                                       lambda: self.changeView(ViewsList.DASHBOARD),
+                                                                       lambda: self.removePermission)
+            case ViewsList.ADD_ACCOUNT:
+                self.currentView = views.addingViews.AddAccount(self.app,
+                                                                self.addAccount,
+                                                                lambda: self.changeView(ViewsList.DASHBOARD))
+            case ViewsList.ADD_INVOICE:
+                self.currentView = views.addingViews.AddInvoice(self.app,
+                                                                self.addInvoice,
+                                                                lambda: self.changeView(ViewsList.DASHBOARD))
+            case ViewsList.ADD_PROJECT:
+                self.currentView = views.addingViews.AddProject(self.app,
+                                                                self.addProject,
+                                                                lambda: self.changeView(ViewsList.DASHBOARD))
+            case ViewsList.ADD_TRANSACTION:
+                self.currentView = views.addingViews.AddTransaction(self.app,
+                                                                      self.addTransaction,
+                                                                      lambda: self.changeView(ViewsList.DASHBOARD))
+            case ViewsList.ADD_VENDOR:
+                self.currentView = views.addingViews.AddVendor(self.app,
+                                                               self.addVendor,
+                                                               lambda: self.changeView(ViewsList.DASHBOARD))
+            case ViewsList.ADD_PERMISSION:
+                self.currentView = views.addingViews.AddPermission(self.app,
+                                                                   self.givePermission,
+                                                                   lambda: self.changeView(ViewsList.DASHBOARD))
 
 
         self.currentView.grid(row=0, column=0)
@@ -186,13 +218,14 @@ class Controller:
             success, response = operationsAPI.invoices.getInvoices(self.session)
         elif what == "users":
             success, response = operationsAPI.auth.getUsers(self.session)
+        elif what == "permissions":
+            success, response = operationsAPI.auth.getAllPermissions(self.session)
 
         if not success:
             self.showPopup(response)
             return
         else:
-            self.changeView(ViewsList.RECORD_LIST, what, response)
-
+            self.changeView(ViewsList.RECORD_LIST, what, pd.DataFrame(response))
 
     def importData(self):
         pass
@@ -229,4 +262,118 @@ class Controller:
         else:
             self.showPopup(response)
 
+    def detailsVendor(self, name):
+        pass
+
+    def addVendor(self):
+        vendorName = self.currentView.vendorNameEntry.get()
+        vendorPostCode = self.currentView.vendorPostCodeEntry.get()
+        vendorCity = self.currentView.vendorCityEntry.get()
+        vendorStreet = self.currentView.vendorStreetEntry.get()
+        vendorNIPNumber = self.currentView.vendorNIPNumberEntry.get()
+        vendorAccountNumber = self.currentView.vendorAccountNumberEntry.get()
+
+        success, response = operationsAPI.vendors.createVendor(self.session, vendorName, vendorPostCode, vendorCity,
+                                                               vendorStreet, vendorNIPNumber, vendorAccountNumber)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def detailsProject(self, name):
+        pass
+
+    def addProject(self):
+        projectName = self.currentView.nameEntry.get()
+        projectDescription = self.currentView.descriptionEntry.get()
+        projectStartDate = self.currentView.startEntry.get()
+        projectEndDate = self.currentView.endEntry.get()
+        projectStatus = self.currentView.statusEntry.get()
+
+        success, response = operationsAPI.projects.createProject(self.session, projectName, projectDescription,
+                                                                    projectStartDate, projectEndDate, projectStatus)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def detailsReturn(self, id):
+        pass
+
+    def detailsAccount(self, name):
+        pass
+
+    def addAccount(self):
+        name = self.currentView.nameEntry.get()
+        balance = self.currentView.balanceEntry.get()
+        number = self.currentView.numberEntry.get()
+
+        success, response = operationsAPI.accounts.createAccount(self.session, name, number, balance)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def detailsTransaction(self, id):
+        pass
+
+    def addTransaction(self):
+        date = self.currentView.dateEntry.get()
+        amount = self.currentView.amountEntry.get()
+        description = self.currentView.descriptionEntry.get()
+        title = self.currentView.titleEntry.get()
+        account = self.currentView.accountEntry.get()
+        vendor = self.currentView.vendorEntry.get()
+        project = self.currentView.projectEntry.get()
+        invoice = self.currentView.invoiceEntry.get()
+
+        success, response = operationsAPI.transactions.createTransaction(self.session, date, title, description,
+                                                                         amount, account, vendor, project, invoice)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def detailsInvoice(self, number):
+        pass
+
+    def addInvoice(self, filePath):
+        number = self.currentView.numberEntry.get()
+        date = self.currentView.dateEntry.get()
+        description = self.currentView.descriptionEntry.get()
+        file = filePath
+
+        success, response = operationsAPI.invoices.createInvoice(self.session, number, date, description, file)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def detailsUser(self, username):
+        pass
+
+    def givePermission(self):
+        username = self.currentView.usernameEntry.get()
+        permission = self.currentView.permissionEntry.get()
+
+        success, response = operationsAPI.auth.givePermission(self.session, username, permission)
+
+        if success:
+            self.showPopup(response)
+            self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
+
+    def removePermission(self, username):
+        pass
 

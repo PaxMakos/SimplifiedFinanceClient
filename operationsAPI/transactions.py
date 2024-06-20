@@ -1,7 +1,7 @@
 from settings import API_URL
 
 
-def getTransactions(session, fromDate, toDate):
+def getTransactions(session, fromDate=None, toDate=None):
     # API request to get transactions
     try:
         data = {"fromDate": fromDate, "toDate": toDate}
@@ -15,7 +15,7 @@ def getTransactions(session, fromDate, toDate):
         return False, "Connection error"
 
 
-def createTransaction(session, transactionDate, title, description, amount, account, vendor, project):
+def createTransaction(session, transactionDate, title, description, amount, account, vendor, project, invoice):
     # API request to create transaction
     try:
         data = {
@@ -25,10 +25,11 @@ def createTransaction(session, transactionDate, title, description, amount, acco
             "transactionAmount": amount,
             "accountName": account,
             "vendorName": vendor,
-            "projectNAme": project
+            "projectNAme": project,
+            "invoiceNumber": invoice
         }
 
-        response = session.post(API_URL + "createTransaction/", data=data)
+        response = session.post(API_URL + "createTransactionBasic/", data=data)
 
         if response.status_code == 200 and response.json()["status"] == "success":
             return True, response.json()["message"]

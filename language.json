@@ -84,5 +84,19 @@
   "isSuperuser": "Administrator",
   "createUser": "Dodaj użytkownika",
   "givePermission": "Dodaj uprawnienie",
-  "vendorsButton": "Pokaż partnerów"
+  "vendorsButton": "Pokaż partnerów",
+  "returnView": "Lista oczekujących zwrotów",
+  "invoiceDescription": "Opis faktury",
+  "projectDescription": "Opis projektu",
+  "projectStart": "Data rozpoczęcia projektu",
+  "projectEnd": "Data zakończenia projektu",
+  "projectStatus": "Status projektu",
+  "transactionDescription": "Opis transakcji",
+  "transactionAccount": "Konto wyjściowe",
+  "transactionVendor": "Odbiorca lub nadawca",
+  "vendorPostcode": "Kod pocztowy",
+  "vendorCity": "Miasto",
+  "vendorStreet": "Ulica",
+  "permissionUsername": "Użytkownik",
+  "permissionProject": "Projekt"
 }

@@ -6,7 +6,7 @@ def getVendors(session):
     try:
         response = session.get(API_URL + "vendors/")
 
-        if response.status_code == 200:
+        if response.status_code == 200 and response.json()["status"] == "success":
             return True, response.json()["vendors"]
         else:
             return False, response.json()["message"]

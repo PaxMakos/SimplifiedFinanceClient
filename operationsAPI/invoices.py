@@ -54,12 +54,12 @@ def createInvoice(session, invoiceNumber, invoiceDate, description, filePath):
 
             files = {"file": file}
 
-        response = session.post(API_URL + "createInvoice/", data=data, files=files)
+            response = session.post(API_URL + "createInvoice/", data=data, files=files)
 
-        if response.status_code == 200 and response.json()["status"] == "success":
-            return True, response.json()["message"]
-        else:
-            return False, response.json()["message"]
+            if response.status_code == 200 and response.json()["status"] == "success":
+                return True, response.json()["message"]
+            else:
+                return False, response.json()["message"]
     except ConnectionError:
         return False, "Connection error"
 

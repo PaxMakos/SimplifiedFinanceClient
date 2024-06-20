@@ -13,7 +13,7 @@ class RecordView(CTkFrame):
         self.goBack = goBack
         self.createRecord = createRecord
         self.action = action
-        self.lang = json.load(open("../language.json", "r", encoding="utf-8"))
+        self.lang = json.load(open("language.json", "r", encoding="utf-8"))
         self.width = self.winfo_screenwidth()
         self.height = self.winfo_screenheight() - 50
 
@@ -418,7 +418,6 @@ class RecordView(CTkFrame):
 
         self.pack(fill=BOTH, expand=1)
 
-
     def createReturnWidgets(self):
         self.title.configure(text=self.lang["returnView"])
         if self.createRecord is not None:
@@ -432,10 +431,10 @@ class RecordView(CTkFrame):
         self.projectTitle = CTkLabel(self.columnsTitle, text=self.lang["project"])
         self.projectTitle.grid(row=0, column=0)
 
-        self.titleTitle = CTkLabel(self.columnsTitle, text=self.lang["title"])
+        self.titleTitle = CTkLabel(self.columnsTitle, text=self.lang["returnTitle"])
         self.titleTitle.grid(row=0, column=1)
 
-        self.amountTitle = CTkLabel(self.columnsTitle, text=self.lang["amount"])
+        self.amountTitle = CTkLabel(self.columnsTitle, text=self.lang["returnAmount"])
         self.amountTitle.grid(row=0, column=2)
 
         self.actionsTitle = CTkLabel(self.columnsTitle, text=self.lang["actions"])
@@ -478,6 +477,6 @@ if __name__ == "__main__":
 
     data = pd.read_csv("projects.csv")
 
-    view = RecordView(root, "user", data, lambda: print("Go back"), lambda: print("Create record"), lambda: print("Details"))
+    view = RecordView(root, "return", data, lambda: print("Go back"), lambda: print("Create record"), lambda: print("Details"))
     view.grid(row=0, column=0, sticky="nsew")
     root.mainloop()

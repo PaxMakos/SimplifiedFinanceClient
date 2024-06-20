@@ -7,4 +7,5 @@ from views.startView import StartView
 from views.popupView import PopupView
 from views.addReturnView import AddReturnView
 from views.recordListView import RecordView
+from views.addingViews import AddAccount, AddVendor, AddTransaction, AddProject, AddInvoice, AddPermission
 

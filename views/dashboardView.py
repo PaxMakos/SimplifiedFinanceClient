@@ -21,19 +21,26 @@ class Dashboard(CTkFrame):
 
         self.title = CTkLabel(self, text=lang["dashboardTitle"], font=("Arial", 20))
 
-        self.transactionButton = CTkButton(self, text=lang["transactionsButton"], command=self.showFunc("transactions"),
+        self.transactionButton = CTkButton(self, text=lang["transactionsButton"],
+                                           command=lambda: self.showFunc("transactions"),
                                            height=HEIGHT, width=WIDTH)
-        self.invoiceButton = CTkButton(self, text=lang["invoicesButton"], command=self.showFunc("invoices"),
+        self.invoiceButton = CTkButton(self, text=lang["invoicesButton"],
+                                       command=lambda: self.showFunc("invoices"),
                                        height=HEIGHT, width=WIDTH)
-        self.accountButton = CTkButton(self, text=lang["accountsButton"], command=self.showFunc("accounts"),
+        self.accountButton = CTkButton(self, text=lang["accountsButton"],
+                                       command=lambda: self.showFunc("accounts"),
                                        height=HEIGHT, width=WIDTH)
-        self.projectButton = CTkButton(self, text=lang["projectsButton"], command=self.showFunc("projects"),
+        self.projectButton = CTkButton(self, text=lang["projectsButton"],
+                                       command=lambda: self.showFunc("projects"),
                                        height=HEIGHT, width=WIDTH)
-        self.permissionButton = CTkButton(self, text=lang["permissionsButton"], command=self.showFunc("permissions"),
+        self.permissionButton = CTkButton(self, text=lang["permissionsButton"],
+                                          command=lambda: self.showFunc("permissions"),
                                           height=HEIGHT, width=WIDTH)
-        self.vendorsButton = CTkButton(self, text=lang["vendorsButton"], command=self.showFunc("vendors"),
+        self.vendorsButton = CTkButton(self, text=lang["vendorsButton"],
+                                       command=lambda: self.showFunc("vendors"),
                                      height=HEIGHT, width=WIDTH)
-        self.returnsButton = CTkButton(self, text=lang["returnsButton"], command=self.showFunc("returns"),
+        self.returnsButton = CTkButton(self, text=lang["returnsButton"],
+                                       command=lambda: self.showFunc("returns"),
                                        height=HEIGHT, width=WIDTH)
         self.logoutButton = CTkButton(self, text=lang["logoutButton"], command=self.logoutFunc)
         self.importButton = CTkButton(self, text=lang["importButton"], command=self.importFunc,
