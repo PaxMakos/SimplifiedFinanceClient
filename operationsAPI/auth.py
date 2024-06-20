@@ -75,7 +75,7 @@ def isSuperuser(session):
     try:
         response = session.get(API_URL + "isSuperuser/")
         if response.status_code == 200 and response.json()["status"] == "success":
-            return True, response.json()["isSuperuser"]
+            return True, response.json()["message"]
         else:
             return False, response.json()["message"]
     except ConnectionError:

@@ -17,7 +17,7 @@ class Dashboard(CTkFrame):
         self.createWidgets()
 
     def createWidgets(self):
-        lang = json.load(open("../language.json", "r", encoding="utf-8"))
+        lang = json.load(open("language.json", "r", encoding="utf-8"))
 
         self.title = CTkLabel(self, text=lang["dashboardTitle"], font=("Arial", 20))
 
@@ -58,8 +58,6 @@ class Dashboard(CTkFrame):
             self.transactionButton.grid(row=1, column=0, pady=10, padx=10)
             self.exportButton.grid(row=1, column=1, pady=10, padx=10)
             self.logoutButton.grid(row=3, column=1, pady=10, padx=10)
-
-        self.pack()
 
 
 if __name__ == "__main__":

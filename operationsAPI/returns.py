@@ -15,25 +15,28 @@ def getReturns(session):
         return False, "Connection error"
 
 
-def createReturn(project, title, date, amount, description, account, file):
+def createReturn(project, title, date, amount, description, account, filePath):
     # API request to create return
     try:
-        data = {
-            "projectName": project,
-            "returnTitle": title,
-            "returnDate": date,
-            "returnAmount": amount,
-            "returnDescription": description,
-            "accountToReturn": account,
-            "invoice": file
-        }
+        with open(filePath, "rb") as file:
 
-        response = requests.post(API_URL + "createReturn/", data=data)
+            data = {
+                "projectName": project,
+                "returnTitle": title,
+                "returnDate": date,
+                "returnAmount": amount,
+                "returnDescription": description,
+                "accountToReturn": account,
+            }
 
-        if response.status_code == 200 and response.json()["status"] == "success":
-            return True, response.json()["message"]
-        else:
-            return False, response.json()["message"]
+            files = {"invoice": file}
+
+            response = requests.post(API_URL + "createReturn/", data=data, files=files)
+
+            if response.status_code == 200 and response.json()["status"] == "success":
+                return True, response.json()["message"]
+            else:
+                return False, response.json()["message"]
     except ConnectionError:
         return False, "Connection error"
 

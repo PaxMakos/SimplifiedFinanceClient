@@ -41,17 +41,20 @@ def getInvoices(session):
         return False, "Connection error"
 
 
-def createInvoice(session, invoiceNumber, invoiceDate, description, file):
+def createInvoice(session, invoiceNumber, invoiceDate, description, filePath):
     # API request to create invoice
     try:
-        data = {
-            "invoiceNumber": invoiceNumber,
-            "invoiceDate": invoiceDate,
-            "invoiceDescription": description,
-            "file": file
-        }
+        with open(filePath, "rb") as file:
 
-        response = session.post(API_URL + "createInvoice/", data=data)
+            data = {
+                "invoiceNumber": invoiceNumber,
+                "invoiceDate": invoiceDate,
+                "invoiceDescription": description,
+            }
+
+            files = {"file": file}
+
+        response = session.post(API_URL + "createInvoice/", data=data, files=files)
 
         if response.status_code == 200 and response.json()["status"] == "success":
             return True, response.json()["message"]
@@ -61,16 +64,20 @@ def createInvoice(session, invoiceNumber, invoiceDate, description, file):
         return False, "Connection error"
 
 
-def updateInvoice(session, invoiceNumber, invoiceDate=None, description=None, file=None):
+def updateInvoice(session, invoiceNumber, invoiceDate=None, description=None, filePath=None):
     # API request to update invoice
     try:
         data = {
             "invoiceDate": invoiceDate,
             "invoiceDescription": description,
-            "file": file
         }
 
-        response = session.put(API_URL + f"updateInvoice/{invoiceNumber}/", data=data)
+        if filePath:
+            with open(filePath, "rb") as file:
+                files = {"file": file}
+                response = session.put(API_URL + f"updateInvoice/{invoiceNumber}/", data=data, files=files)
+        else:
+            response = session.put(API_URL + f"updateInvoice/{invoiceNumber}/", data=data)
 
         if response.status_code == 200 and response.json()["status"] == "success":
             return True, response.json()["message"]

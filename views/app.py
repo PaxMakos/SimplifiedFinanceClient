@@ -3,6 +3,8 @@ from tkinter import *
 
 
 class App(CTk):
+    # This class is the main window of the application
+    # later menu will be migrated to this class
     def __init__(self):
         super().__init__()
 

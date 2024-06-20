@@ -33,7 +33,7 @@ class Controller:
                 self.currentView = views.startView.StartView(self.app,
                                                              lambda: self.changeView(ViewsList.LOGIN),
                                                              lambda: self.changeView(ViewsList.REGISTER),
-                                                             lambda: self.changeView(ViewsList.START))
+                                                             lambda: self.changeView(ViewsList.ADD_RETURN))
             case ViewsList.LOGIN:
                 self.currentView = views.loginView.Login(self.app,
                                                          self.login,
@@ -47,15 +47,23 @@ class Controller:
                 self.currentView = views.configureView.ConfigView(self.app,
                                                                   self.configure)
             case ViewsList.DASHBOARD:
-                isSuperUser = operationsAPI.auth.isSuperUser(self.session)
+                isSuperUser = operationsAPI.auth.isSuperuser(self.session)[1]
                 self.currentView = views.dashboardView.Dashboard(self.app,
                                                                  isSuperUser,
-                                                                 self.changeView(ViewsList.START),
+                                                                 self.logout,
                                                                  self.show,
                                                                  self.importData,
                                                                  self.exportData)
+            case ViewsList.ADD_RETURN:
+                if self.session is None:
+                    prev = ViewsList.START
+                else:
+                    prev = ViewsList.DASHBOARD
 
-        self.currentView.pack()
+                self.currentView = views.addReturnView.AddReturnView(self.app,
+                                                                     self.addReturn,
+                                                                     lambda: self.changeView(prev))
+
         self.currentView.grid(row=0, column=0)
         self.app.currentUi.append(self.currentView)
 
@@ -114,3 +122,39 @@ class Controller:
             self.showPopup(response)
 
     def show(self, what):
+        pass
+
+    def importData(self):
+        pass
+
+    def exportData(self):
+        pass
+
+    def logout(self):
+        success, response = operationsAPI.auth.logout(self.session)
+
+        if success:
+            self.session = None
+            self.changeView(ViewsList.START)
+        else:
+            self.showPopup(response)
+
+    def addReturn(self, filePath):
+        project = self.currentView.projectNameEntry.get()
+        title = self.currentView.returnTitleEntry.get()
+        date = self.currentView.returnDateEntry.get()
+        amount = self.currentView.returnAmountEntry.get()
+        description = self.currentView.returnDescriptionEntry.get()
+        account = self.currentView.accountToReturnEntry.get()
+        file = filePath
+
+        success, response = operationsAPI.returns.createReturn(project, title, date, amount, description, account, file)
+        if success:
+            self.showPopup(response)
+
+            if self.session is None:
+                self.changeView(ViewsList.START)
+            else:
+                self.changeView(ViewsList.DASHBOARD)
+        else:
+            self.showPopup(response)
