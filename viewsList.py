@@ -1,0 +1,30 @@
+import enum
+
+
+class ViewsList(enum.Enum):
+    START = 0
+    LOGIN = 1
+    REGISTER = 2
+    CONFIGURE = 3
+    CONFIGURE_REGISTER = 4
+    DASHBOARD = 5
+    ADD_RETURN = 6
+    IMPORT = 7
+    EXPORT = 8
+    RECORD_LIST = 9
+    ADD_ACCOUNT = 10
+    ADD_INVOICE = 11
+    ADD_PROJECT = 12
+    ADD_TRANSACTION = 13
+    ADD_VENDOR = 14
+    ADD_PERMISSION = 15
+    EDIT_ACCOUNT = 16
+    EDIT_INVOICE = 17
+    EDIT_PROJECT = 18
+    EDIT_TRANSACTION = 19
+    EDIT_VENDOR = 20
+    GRAPH = 21
+    GENERATE_INVOICE = 22
+
+
+

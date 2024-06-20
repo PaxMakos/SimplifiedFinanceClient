@@ -1,4 +1,4 @@
-from ..settings import API_URL
+from settings import API_URL
 
 
 def getVendors(session):

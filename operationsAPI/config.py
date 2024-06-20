@@ -35,14 +35,9 @@ def configure(organisation, postCode, city, street, NIP, accountNumber,
         }
 
         response = requests.post(API_URL + "configure/", data=data)
-
+        print(response.json())
         if response.status_code == 200 and response.json()["status"] == "success":
-            loginResponse = login(treasurerLogin, treasurerPassword)
-
-            if loginResponse[0]:
-                return True, response.json()["message"]
-            else:
-                return False, loginResponse[1]
+            return True, response.json()["message"]
         else:
             return False, response.json()["message"]
     except ConnectionError:
